@@ -9,6 +9,7 @@ using namespace std;
 struct Record {
     string ano;
     vector<string> cnos;
+    vector<string> pins;
     long double balance{ 0.0 };
 };
 
@@ -69,28 +70,49 @@ void edit(string cno, int mon) {
         stringstream cards(col);
         string card;
         while (getline(cards, card, ',')) {
-            remove(card.begin(), card.end(), ' ');
+            card.erase(remove(card.begin(), card.end(), ' '), card.end());
+            cout << card << endl;
             if (card == cno)
                 found = 1;
             rec.cnos.push_back(card);
+        }
+        getline(conv, col, '"');
+
+        getline(conv, col, '"');
+        stringstream pins(col);
+        string pin;
+        while (getline(pins, pin, ',')) {
+            pin.erase(remove(pin.begin(), pin.end(), ' '), pin.end());
+            rec.pins.push_back(pin);
         }
         getline(conv, col, ',');
 
         getline(conv, col);
         if (found) {
+            col.erase(remove(col.begin(), col.end(), ' '), col.end());
             stringstream bal;
+            int size;
             bal << col;
             bal >> rec.balance;
+            
             rec.balance += mon;
-            fout << rec.ano << ",\"";
+            fout << rec.ano << ", \"";
 
-            int size = rec.cnos.size();
+            size = rec.cnos.size();
             for (int i = 0; i < size; i++) {
                 fout << rec.cnos[i];
                 if (i != size - 1)
                     fout << ", ";
             }
-            fout << "\",";
+            fout << "\",\"";
+
+            size = rec.pins.size();
+            for (int i = 0; i < size; i++) {
+                fout << rec.pins[i];
+                if (i != size - 1)
+                    fout << ", ";
+            }
+            fout << "\", ";
 
             fout << rec.balance << endl;
         }
@@ -99,4 +121,8 @@ void edit(string cno, int mon) {
         
     }
 
+    fin.close();
+    fout.close();
+    remove("bank.csv");
+    rename("banknew.csv", "bank.csv");
 }
