@@ -44,7 +44,7 @@ void Customer::transfer() {
 
 }
 
-void Customer::pingen() {
+void Customer::cardreg() {
 
 }
 

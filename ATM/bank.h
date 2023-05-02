@@ -12,7 +12,7 @@ public:
     void withdraw(int mon);
     void deposit(int mon);
     void transfer();
-    void pingen();
+    void cardreg();
     
 };
 
