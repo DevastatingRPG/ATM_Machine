@@ -55,8 +55,6 @@ void edit(string cno, int mon) {
     fout.open("banknew.csv", ios::out);
     string row;
     string col;
-    vector<Record> Data;
-
 
     while (getline(fin, row)) {
         Record rec;
@@ -79,27 +77,26 @@ void edit(string cno, int mon) {
         getline(conv, col, ',');
 
         getline(conv, col);
-        stringstream bal;
-        bal << col;
-        bal >> rec.balance;
-        if (found)
+        if (found) {
+            stringstream bal;
+            bal << col;
+            bal >> rec.balance;
             rec.balance += mon;
-        
-        Data.push_back(rec);
-        
-    }
+            fout << rec.ano << ",\"";
 
-    for (auto rec : Data) {
-        fout << rec.ano << ',' << '"';
+            int size = rec.cnos.size();
+            for (int i = 0; i < size; i++) {
+                fout << rec.cnos[i];
+                if (i != size - 1)
+                    fout << ", ";
+            }
+            fout << "\",";
 
-        int size = rec.cnos.size();
-        for (int i = 0; i < size; i++) {
-            fout << rec.cnos[i];
-            if (i != size - 1)
-                fout << ',';
+            fout << rec.balance << endl;
         }
-        fout << '"' << ',';
-
-        fout << rec.balance << endl;
+        else
+            fout << row << endl;
+        
     }
+
 }
