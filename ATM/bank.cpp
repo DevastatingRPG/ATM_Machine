@@ -1,17 +1,5 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-#include <sstream>
 #include "bank.h"
 using namespace std;
-
-struct Record {
-    string ano;
-    vector<string> cnos;
-    vector<string> pins;
-    long double balance{ 0.0 };
-};
 
 void Customer::insert() {
 
@@ -24,7 +12,7 @@ long double Customer::balance() {
 void Customer::withdraw(int mon) {
     if (balance() > mon)
     {
-        edit(this-> cno, -mon);
+        balup(this-> cno, -mon);
         cout << "The amount to be withdrawn is " << mon << '\n';
         cout << "The balance is: " << balance() << '\n';
     }
@@ -36,7 +24,7 @@ void Customer::withdraw(int mon) {
 }
 
 void Customer::deposit(int mon) {
-    edit(this->cno, mon);
+    balup(this->cno, mon);
     cout << "The amount deposited is: " << mon << '\n';
     cout << "The balance is: " << balance();
 }
@@ -49,14 +37,26 @@ void Customer::cardreg() {
 
 }
 
-void edit(string cno, int mon) {
-    fstream fin, fout;
+void File::balup(string cno, int mon) {
+    vector<Record>& Data = contain();
 
-    fin.open("bank.csv", ios::in);
-    fout.open("banknew.csv", ios::out);
+    for (Record& rec : Data) {   
+        for (string card : rec.cnos) {
+            if (card == cno)         
+                rec.balance += mon;        
+        }
+    }
+
+    write(Data);
+}
+
+vector<Record>& File::contain() {
+    static vector<Record> Data;
+    ifstream fin;
     string row;
     string col;
 
+    fin.open("bank.csv", ios::in);
     while (getline(fin, row)) {
         Record rec;
         stringstream conv(row);
@@ -71,9 +71,6 @@ void edit(string cno, int mon) {
         string card;
         while (getline(cards, card, ',')) {
             card.erase(remove(card.begin(), card.end(), ' '), card.end());
-            cout << card << endl;
-            if (card == cno)
-                found = 1;
             rec.cnos.push_back(card);
         }
         getline(conv, col, '"');
@@ -88,41 +85,44 @@ void edit(string cno, int mon) {
         getline(conv, col, ',');
 
         getline(conv, col);
-        if (found) {
-            col.erase(remove(col.begin(), col.end(), ' '), col.end());
-            stringstream bal;
-            int size;
-            bal << col;
-            bal >> rec.balance;
-            
-            rec.balance += mon;
-            fout << rec.ano << ", \"";
+        col.erase(remove(col.begin(), col.end(), ' '), col.end());
+        stringstream bal(col);
+        bal >> rec.balance;
+        Data.push_back(rec);
 
-            size = rec.cnos.size();
-            for (int i = 0; i < size; i++) {
-                fout << rec.cnos[i];
-                if (i != size - 1)
-                    fout << ", ";
-            }
-            fout << "\",\"";
-
-            size = rec.pins.size();
-            for (int i = 0; i < size; i++) {
-                fout << rec.pins[i];
-                if (i != size - 1)
-                    fout << ", ";
-            }
-            fout << "\", ";
-
-            fout << rec.balance << endl;
-        }
-        else
-            fout << row << endl;
-        
     }
+    
+    return Data;
+}
 
-    fin.close();
+void File::write(vector<Record> Data) {
+    ofstream fout;
+    fout.open("banknew.csv");
+    for (Record rec : Data) {
+        int i;
+        int size;
+        fout << rec.ano << ", \"";
+
+        size = rec.cnos.size();
+        for (i = 0; i < size; i++) {
+            fout << rec.cnos[i];
+            if (i != size - 1) 
+                fout << ", ";        
+        }
+        fout << "\", \"";
+
+        size = rec.pins.size();
+        for (i = 0; i < size; i++) {
+            fout << rec.pins[i];
+            if (i != size - 1)
+                fout << ", ";
+        }
+        fout << "\", ";
+
+        fout << rec.balance << endl;
+    }
     fout.close();
+
     remove("bank.csv");
     rename("banknew.csv", "bank.csv");
 }

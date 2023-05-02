@@ -1,10 +1,8 @@
-#include <iostream>
 #include "bank.h"
 using namespace std;
 
 int main() {
     Customer c;
-    c.cno = "69740";
-    edit(c.cno, 20);
+    c.balup("69740", 30);
     return 0;
 }
