@@ -133,6 +133,9 @@
   <ItemGroup>
     <ClInclude Include="bank.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="bank.csv" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
