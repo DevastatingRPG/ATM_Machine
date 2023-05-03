@@ -2,7 +2,10 @@
 using namespace std;
 
 void Customer::insert() {
-
+    cout<<"Enter the Card Number:"<<'\n';
+    cin>>cno;
+    cout<<"Enter CVV:"<<'\n';
+    cin>>cvv[3];
 }
 
 long double Customer::balance() {
