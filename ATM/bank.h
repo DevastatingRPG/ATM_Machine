@@ -15,15 +15,15 @@ struct Record {
 
 class File {
 public:
-    void balup(string cno, int mon);
+    void balup(string ano, int mon);
     vector<Record>& contain();
     void write(vector<Record> Data);
+    string getacc(string cno);
 };
 
 class Customer : public File{
 public:
-    string cno;
-    char cvv[3];
+    string ano, cno, cvv;
 
     void insert();
     long double balance();

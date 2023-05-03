@@ -5,7 +5,8 @@ void Customer::insert() {
     cout<<"Enter the Card Number:"<<'\n';
     cin>>cno;
     cout<<"Enter CVV:"<<'\n';
-    cin>>cvv[3];
+    cin>>cvv;
+    ano = getacc(cno);
 }
 
 long double Customer::balance() {
@@ -13,23 +14,19 @@ long double Customer::balance() {
 }
 
 void Customer::withdraw(int mon) {
-    if (balance() > mon)
-    {
-        balup(this-> cno, -mon);
-        cout << "The amount to be withdrawn is " << mon << '\n';
-        cout << "The balance is: " << balance() << '\n';
+    if (balance() > mon){
+        balup(this-> ano, -mon);
+        cout << "Transaction Successful" << '\n';
     }
-    else
-    {
+    else{
         cout << "The account has insufficient balance." << '\n';
     }
 
 }
 
 void Customer::deposit(int mon) {
-    balup(this->cno, mon);
-    cout << "The amount deposited is: " << mon << '\n';
-    cout << "The balance is: " << balance();
+    balup(this->ano, mon);
+    cout << "Transaction Successful" << '\n';
 }
 
 void Customer::transfer() {
@@ -40,19 +37,24 @@ void Customer::cardreg() {
 
 }
 
-void File::balup(string cno, int mon) {
+/*
+* Updates Balance of entered Account number by entered amount
+*/
+void File::balup(string ano, int mon) {
     vector<Record>& Data = contain();
 
-    for (Record& rec : Data) {   
-        for (string card : rec.cnos) {
-            if (card == cno)         
-                rec.balance += mon;        
-        }
-    }
-
-    write(Data);
+    for (Record& rec : Data) { 
+        if (rec.ano == ano) {
+            rec.balance += mon;
+            write(Data);
+        }           
+    }  
 }
 
+/*
+* Returns csv file Data in a Vector form where each vector element is a 
+* Record type with properties ano, cnos, pins, balance
+*/
 vector<Record>& File::contain() {
     static vector<Record> Data;
     ifstream fin;
@@ -98,6 +100,9 @@ vector<Record>& File::contain() {
     return Data;
 }
 
+/*
+* Writes Vector back to bank.csv
+*/
 void File::write(vector<Record> Data) {
     ofstream fout;
     fout.open("banknew.csv");
@@ -128,4 +133,18 @@ void File::write(vector<Record> Data) {
 
     remove("bank.csv");
     rename("banknew.csv", "bank.csv");
+}
+
+/*
+* Accepts Card number and returns Account number
+*/
+string File::getacc(string cno) {
+    vector<Record>& Data = contain();
+    for (Record& rec : Data) {
+        for (string card : rec.cnos) {
+            if (card == cno)
+                return rec.ano;
+        }
+    }
+
 }
