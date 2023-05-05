@@ -1,7 +1,8 @@
 #include "bank.h"
 using namespace std;
 
-void Customer::insert() {
+void Customer::insert() 
+{
     cout<<"Enter the Card Number:"<<'\n';
     cin>>cno;
     cout<<"Enter CVV:"<<'\n';
@@ -9,11 +10,13 @@ void Customer::insert() {
     ano = getacc(cno);
 }
 
-long double Customer::balance() {
+long double Customer::balance() 
+{
     return 0.0;
 }
 
-void Customer::withdraw(int mon) {
+void Customer::withdraw(int mon) 
+{
     if (balance() > mon){
         balup(this-> ano, -mon);
         cout << "Transaction Successful" << '\n';
@@ -24,23 +27,36 @@ void Customer::withdraw(int mon) {
 
 }
 
-void Customer::deposit(int mon) {
+void Customer::deposit(int mon) 
+{
     balup(this->ano, mon);
     cout << "Transaction Successful" << '\n';
 }
 
-void Customer::transfer() {
-
+void Customer::transfer(long double mon,string ano) 
+{
+    if(balance()>mon)
+    {
+        balup(this->ano,-mon);
+        balup(ano,mon);
+        cout << "Transaction Successful" << '\n';
+    }
+    else
+    {
+        cout << "The account has insufficient balance." << '\n';
+    }
 }
 
-void Customer::cardreg() {
+void Customer::cardreg() 
+{
 
 }
 
 /*
 * Updates Balance of entered Account number by entered amount
 */
-void File::balup(string ano, int mon) {
+void File::balup(string ano, int mon) 
+{
     vector<Record>& Data = contain();
 
     for (Record& rec : Data) { 
@@ -55,7 +71,8 @@ void File::balup(string ano, int mon) {
 * Returns csv file Data in a Vector form where each vector element is a 
 * Record type with properties ano, cnos, pins, balance
 */
-vector<Record>& File::contain() {
+vector<Record>& File::contain() 
+{
     static vector<Record> Data;
     ifstream fin;
     string row;
@@ -103,7 +120,8 @@ vector<Record>& File::contain() {
 /*
 * Writes Vector back to bank.csv
 */
-void File::write(vector<Record> Data) {
+void File::write(vector<Record> Data) 
+{
     ofstream fout;
     fout.open("banknew.csv");
     for (Record rec : Data) {
@@ -138,7 +156,8 @@ void File::write(vector<Record> Data) {
 /*
 * Accepts Card number and returns Account number
 */
-string File::getacc(string cno) {
+string File::getacc(string cno) 
+{
     vector<Record>& Data = contain();
     for (Record& rec : Data) {
         for (string card : rec.cnos) {
