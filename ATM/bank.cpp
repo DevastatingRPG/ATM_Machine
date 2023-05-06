@@ -8,8 +8,10 @@ void Customer::insert()
     cout<<"Enter Pin: "<<'\n';
     cin>>pin;
     ano = getacc(cno, pin);
-    if (ano == "None")
-        cardreg();
+    
+    if (ano == "None") {        
+        cardreg(cno);
+    }
     else if (ano == "Invalid")
         cout << "Invalid Pin";
     else
@@ -18,9 +20,10 @@ void Customer::insert()
 
 void Customer::operations() {
     int choice;
+    cout << "Running operations";
 }
 
-long double Customer::balance() 
+int Customer::balance() 
 {
     vector<Record>& Data = contain();
     for (Record rec : Data)
@@ -30,25 +33,30 @@ long double Customer::balance()
     }
 }
 
-void Customer::withdraw(long double mon)
+void Customer::withdraw(int mon)
 {
-    if (balance() > mon){
+    if (balance() > mon && mon % 10 == 0){
         balup(this-> ano, -mon);
         cout << "Transaction Successful" << '\n';
     }
     else{
-        cout << "Insufficient Balance." << '\n';
+        cout << "Insufficient Balance or Invalid Denomination." << '\n';
     }
 
 }
 
-void Customer::deposit(long double mon)
+void Customer::deposit(int mon)
 {
-    balup(this->ano, mon);
-    cout << "Transaction Successful" << '\n';
+    if (mon % 10 != 0)
+        cout << "Invalid Denomination \n";
+    else {
+        balup(this->ano, mon);
+        cout << "Transaction Successful" << '\n';
+    }
+    
 }
 
-void Customer::transfer(string ano, long double mon)
+void Customer::transfer(string ano, int mon)
 {
     if(balance()>mon)
     {
@@ -66,44 +74,45 @@ void File::cardreg(string cno) {
     int ans,flag=0;
     string accno,npin,rpin;
     vector<Record>& Data = contain();
-    
-        cout << "Card Number not Found\n";
-        cout << "Do you want to register your card in this system? (press 1 for YES and 2 for NO";
-        cin >> ans;
-        if (ans == 1)
-        {
-            cout << "Please Enter Your Account Number: ";
-            cin >>accno;
-            while (flag == 0)
-            {
-                ans = 0;
-                if (ans > 1) cout << "Both pins should be same.\n Try Again";
-                cout << "Set a pin: ";
-                cin >> npin;
-                cout << "Confirm your pin: ";
-                cin >> rpin;
-                if (npin == rpin) flag = 1;
-                ans++;
-            }
-            for (Record& rec : Data)
-            {
-                if(rec.ano == accno)
-                {
-                    rec.cnos.push_back(cno);
-                    rec.pins.push_back(rpin);
-                    write(Data);
-                    break;
-                }
-            }
+    cout << "Card not Found\n";
+    cout << "Do you want to register your card in this system? (1 : YES, 2 : NO) : ";
+    cin >> ans;
+    if (ans == 1)
+    {
+        cout << "Please Enter Your Account Number: ";
+        cin >>accno;
+        while (flag != 1)
+        {           
+            if (flag == 2) cout << "Both pins should be same.\n Try Again";
+            cout << "Set a pin: ";
+            cin >> npin;
+            cout << "Confirm your pin: ";
+            cin >> rpin;
+            if (npin == rpin)
+                flag = 1;
+            else
+                flag = 2;
         }
-        else cout << "Thank you\n";
-        
+            
+        for (Record& rec : Data)
+        {  
+            if(rec.ano == accno)   
+            {  
+                rec.cnos.push_back(cno);  
+                rec.pins.push_back(rpin);    
+                write(Data);
+                break;
+            }   
+        }
+        Data.clear();
     }
+    else cout << "Thank you\n";       
+}
 
 /*
 * Updates Balance of entered Account number by entered amount
 */
-void File::balup(string ano, long double mon) 
+void File::balup(string ano, int mon) 
 {
     vector<Record>& Data = contain();
 
@@ -160,7 +169,6 @@ vector<Record>& File::contain()
         bal >> rec.balance;
         Data.push_back(rec);
     }
-    
     return Data;
 }
 
@@ -170,7 +178,7 @@ vector<Record>& File::contain()
 void File::write(vector<Record> Data) 
 {
     ofstream fout;
-    fout.open("banknew.csv");
+    fout.open("banknew.csv", ios::out);
     for (Record rec : Data) {
         int i;
         int size;
@@ -206,16 +214,17 @@ void File::write(vector<Record> Data)
 string File::getacc(string cno, string pin) 
 {
     vector<Record>& Data = contain();
+    
     for (Record& rec : Data) {
         for (int i = 0; i < rec.cnos.size(); i++) {
             if (rec.cnos[i] == cno) {
                 if (rec.pins[i] == pin)
-                    return rec.ano;
+                    return rec.ano;                                  
                 else
                     return "Invalid";
             }
         }
     }
+    Data.clear();
     return "None";
-
 }

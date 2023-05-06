@@ -15,7 +15,7 @@ struct Record {
 
 class File {
 public:
-    void balup(string ano, long double mon);
+    void balup(string ano, int mon);
     vector<Record>& contain();
     void write(vector<Record> Data);
     string getacc(string cno, string pin);
@@ -28,8 +28,8 @@ public:
 
     void operations();
     void insert();
-    long double balance();
-    void withdraw(long double mon);
-    void deposit(long double mon);
-    void transfer(string ano, long double mon); 
+    int balance();
+    void withdraw(int mon);
+    void deposit(int mon);
+    void transfer(string ano, int mon); 
 };
