@@ -73,6 +73,7 @@ void File::balup(string ano, long double mon)
         if (rec.ano == ano) {
             rec.balance += mon;
             write(Data);
+            break;
         }           
     }  
 }
@@ -92,7 +93,6 @@ vector<Record>& File::contain()
     while (getline(fin, row)) {
         Record rec;
         stringstream conv(row);
-        bool found{ 0 };
 
         getline(conv, col, ',');
         rec.ano = col;
@@ -121,7 +121,6 @@ vector<Record>& File::contain()
         stringstream bal(col);
         bal >> rec.balance;
         Data.push_back(rec);
-
     }
     
     return Data;
