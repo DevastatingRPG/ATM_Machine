@@ -7,9 +7,8 @@ void Customer::insert()
     cin>>cno;
     ano = getacc(cno);
     
-    if (ano == "None") {        
+    if (ano == "None")       
         cardreg(cno);
-    }
     else if (ano == "Invalid")
         cout << "Invalid Pin";
     else
