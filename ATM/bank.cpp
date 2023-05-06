@@ -22,6 +22,12 @@ void Customer::operations() {
 
 long double Customer::balance() 
 {
+    vector<Record>& Data = contain();
+    for (Record rec : Data)
+    {
+        if (this->ano == rec.ano)
+            return rec.balance;
+    }
     return 0.0;
 }
 
