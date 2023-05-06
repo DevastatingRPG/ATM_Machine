@@ -15,21 +15,22 @@ struct Record {
 
 class File {
 public:
-    void balup(string ano, int mon);
+    void balup(string ano, long double mon);
     vector<Record>& contain();
     void write(vector<Record> Data);
     string getacc(string cno);
+    void cardreg();
 };
 
 class Customer : public File{
 public:
-    string ano, cno, cvv;
+    string ano, cno, pin;
 
     void insert();
     long double balance();
-    void withdraw(int mon);
-    void deposit(int mon);
-    void transfer();
-    void cardreg();
+    void withdraw(long double mon);
+    void deposit(long double mon);
+    void transfer(string ano, long double mon);
+    
     
 };

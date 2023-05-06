@@ -3,11 +3,20 @@ using namespace std;
 
 void Customer::insert() 
 {
-    cout<<"Enter the Card Number:"<<'\n';
+    cout<<"Enter the Card Number: "<<'\n';
     cin>>cno;
-    cout<<"Enter CVV:"<<'\n';
-    cin>>cvv;
+    cout<<"Enter Pin: "<<'\n';
+    cin>>pin;
     ano = getacc(cno);
+    if (ano == "Null") {
+        cardreg();
+    }
+    else {
+        cout << ano;
+        if(!pincheck())
+
+    }
+    
 }
 
 long double Customer::balance() 
@@ -15,7 +24,7 @@ long double Customer::balance()
     return 0.0;
 }
 
-void Customer::withdraw(int mon) 
+void Customer::withdraw(long double mon)
 {
     if (balance() > mon){
         balup(this-> ano, -mon);
@@ -27,13 +36,13 @@ void Customer::withdraw(int mon)
 
 }
 
-void Customer::deposit(int mon) 
+void Customer::deposit(long double mon)
 {
     balup(this->ano, mon);
     cout << "Transaction Successful" << '\n';
 }
 
-void Customer::transfer(long double mon,string ano) 
+void Customer::transfer(string ano, long double mon)
 {
     if(balance()>mon)
     {
@@ -47,7 +56,7 @@ void Customer::transfer(long double mon,string ano)
     }
 }
 
-void Customer::cardreg() 
+void File::cardreg() 
 {
 
 }
@@ -55,7 +64,7 @@ void Customer::cardreg()
 /*
 * Updates Balance of entered Account number by entered amount
 */
-void File::balup(string ano, int mon) 
+void File::balup(string ano, long double mon) 
 {
     vector<Record>& Data = contain();
 
@@ -165,5 +174,6 @@ string File::getacc(string cno)
                 return rec.ano;
         }
     }
+    return "None";
 
 }
