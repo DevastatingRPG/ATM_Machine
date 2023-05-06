@@ -7,16 +7,17 @@ void Customer::insert()
     cin>>cno;
     cout<<"Enter Pin: "<<'\n';
     cin>>pin;
-    ano = getacc(cno);
-    if (ano == "Null") {
+    ano = getacc(cno, pin);
+    if (ano == "None")
         cardreg();
-    }
-    else {
-        cout << ano;
-        if(!pincheck())
+    else if (ano == "Invalid")
+        cout << "Invalid Pin";
+    else
+        operations();  
+}
 
-    }
-    
+void Customer::operations() {
+    int choice;
 }
 
 long double Customer::balance() 
@@ -31,7 +32,7 @@ void Customer::withdraw(long double mon)
         cout << "Transaction Successful" << '\n';
     }
     else{
-        cout << "The account has insufficient balance." << '\n';
+        cout << "Insufficient Balance." << '\n';
     }
 
 }
@@ -52,7 +53,7 @@ void Customer::transfer(string ano, long double mon)
     }
     else
     {
-        cout << "The account has insufficient balance." << '\n';
+        cout << "Insufficient Balance." << '\n';
     }
 }
 
@@ -165,13 +166,17 @@ void File::write(vector<Record> Data)
 /*
 * Accepts Card number and returns Account number
 */
-string File::getacc(string cno) 
+string File::getacc(string cno, string pin) 
 {
     vector<Record>& Data = contain();
     for (Record& rec : Data) {
-        for (string card : rec.cnos) {
-            if (card == cno)
-                return rec.ano;
+        for (int i = 0; i < rec.cnos.size(); i++) {
+            if (rec.cnos[i] == cno) {
+                if (rec.pins[i] == pin)
+                    return rec.ano;
+                else
+                    return "Invalid";
+            }
         }
     }
     return "None";
