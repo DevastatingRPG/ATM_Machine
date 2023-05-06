@@ -2,9 +2,8 @@
 using namespace std;
 
 int main() {
-    // test
-    Customer c;
-    c.ano = "1131";
-    cout << c.balance();
+    Customer cust;
+    cust.insert();
+    cout << "Thank you";
     return 0;
 }
