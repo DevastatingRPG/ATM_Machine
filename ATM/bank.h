@@ -19,7 +19,7 @@ public:
     vector<Record>& contain();
     void write(vector<Record> Data);
     string getacc(string cno, string pin);
-    void cardreg();
+    void cardreg(string cno);
 };
 
 class Customer : public File{

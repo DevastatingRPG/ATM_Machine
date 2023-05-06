@@ -22,7 +22,12 @@ void Customer::operations() {
 
 long double Customer::balance() 
 {
-    return 0.0;
+    vector<Record>& Data = contain();
+    for (Record rec : Data)
+    {
+        if (this->ano == rec.ano)
+            return rec.balance;
+    }
 }
 
 void Customer::withdraw(long double mon)
@@ -57,10 +62,43 @@ void Customer::transfer(string ano, long double mon)
     }
 }
 
-void File::cardreg() 
-{
-
-}
+void File::cardreg(string cno) {
+    int ans,flag=0;
+    string accno,npin,rpin;
+    vector<Record>& Data = contain();
+    
+        cout << "Card Number not Found\n";
+        cout << "Do you want to register your card in this system? (press 1 for YES and 2 for NO";
+        cin >> ans;
+        if (ans == 1)
+        {
+            cout << "Please Enter Your Account Number: ";
+            cin >>accno;
+            while (flag == 0)
+            {
+                ans = 0;
+                if (ans > 1) cout << "Both pins should be same.\n Try Again";
+                cout << "Set a pin: ";
+                cin >> npin;
+                cout << "Confirm your pin: ";
+                cin >> rpin;
+                if (npin == rpin) flag = 1;
+                ans++;
+            }
+            for (Record& rec : Data)
+            {
+                if(rec.ano == accno)
+                {
+                    rec.cnos.push_back(cno);
+                    rec.pins.push_back(rpin);
+                    write(Data);
+                    break;
+                }
+            }
+        }
+        else cout << "Thank you\n";
+        
+    }
 
 /*
 * Updates Balance of entered Account number by entered amount
