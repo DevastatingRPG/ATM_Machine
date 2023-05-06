@@ -18,7 +18,26 @@ void Customer::insert()
 
 void Customer::operations() {
     int choice;
-    cout << "Running operations";
+    cout<<"1.Balance 2.Withdraw 3.Deposit 4.Transfer \n";
+    cin>>choice;
+    switch(choice)
+    {
+        case 1:
+            cout<<"Account balance is: \n"<<balance();
+            break;
+        case 2:
+            cout<<"Enter the amount to be withdrawn: \n"<<withdraw();
+            break;
+        case 3:
+            cout<<"Enter the amount to be deposited: \n"<<deposit();
+            break;
+        case 4:
+            cout<<"Enter the amount to be transferred: \n"<<transfer();
+            break;
+        default:
+            cout<<"Invalid Operation. \n";
+            break;
+    }
 }
 
 int Customer::balance() 
