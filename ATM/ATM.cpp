@@ -3,8 +3,13 @@ using namespace std;
 
 int main() {
     cout<<"Welcome \n";
-    Customer cust;
-    cust.insert();
-    cout << "Thank you";
+    bool stop{ 0 };
+    while (not stop) {
+        Customer cust;
+        cust.insert();
+        cout << "Do you want to exit ? (0.Continue 1.Exit): ";
+        cin >> stop;
+    }   
+    cout << "\nThank you";
     return 0;
 }
