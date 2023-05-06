@@ -28,7 +28,6 @@ long double Customer::balance()
         if (this->ano == rec.ano)
             return rec.balance;
     }
-    return 0.0;
 }
 
 void Customer::withdraw(long double mon)
