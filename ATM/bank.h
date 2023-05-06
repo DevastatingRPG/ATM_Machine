@@ -18,13 +18,13 @@ public:
     void balup(string ano, int mon);
     vector<Record>& contain();
     void write(vector<Record> Data);
-    string getacc(string cno, string pin);
+    string getacc(string cno);
     void cardreg(string cno);
 };
 
 class Customer : public File{
 public:
-    string ano, cno, pin;
+    string ano, cno;
 
     void operations();
     void insert();

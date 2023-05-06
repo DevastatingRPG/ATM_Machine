@@ -5,9 +5,7 @@ void Customer::insert()
 {
     cout<<"Enter the Card Number: "<<'\n';
     cin>>cno;
-    cout<<"Enter Pin: "<<'\n';
-    cin>>pin;
-    ano = getacc(cno, pin);
+    ano = getacc(cno);
     
     if (ano == "None") {        
         cardreg(cno);
@@ -211,13 +209,16 @@ void File::write(vector<Record> Data)
 /*
 * Accepts Card number and returns Account number
 */
-string File::getacc(string cno, string pin) 
+string File::getacc(string cno) 
 {
     vector<Record>& Data = contain();
     
     for (Record& rec : Data) {
         for (int i = 0; i < rec.cnos.size(); i++) {
             if (rec.cnos[i] == cno) {
+                cout << "Enter Pin: " << '\n';
+                string pin;
+                cin >> pin;
                 if (rec.pins[i] == pin)
                     return rec.ano;                                  
                 else
