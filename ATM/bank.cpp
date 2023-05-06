@@ -26,13 +26,25 @@ void Customer::operations() {
             cout<<"Account balance is: \n"<<balance();
             break;
         case 2:
-            cout<<"Enter the amount to be withdrawn: \n"<<withdraw();
+            int money; 
+            cout<<"Enter the amount to be withdrawn: \n";
+            cin>>money;
+            withdraw(money);
             break;
         case 3:
-            cout<<"Enter the amount to be deposited: \n"<<deposit();
+            int money;
+            cout<<"Enter the amount to be deposited: \n";
+            cin>>money;
+            deposit(money);
             break;
         case 4:
-            cout<<"Enter the amount to be transferred: \n"<<transfer();
+            int money;
+            string ano;
+            cout<<"Enter the account number of recipient: \n";
+            cin>>ano;
+            cout<<"Enter the amount to be transferred: \n";
+            cin>>money;
+            transfer(ano,money);
             break;
         default:
             cout<<"Invalid Operation. \n";
