@@ -8,15 +8,15 @@ using namespace std;
 * calls operations() if verified.. If it doesn’t exist, asks user if they want to initialize the card to their account.
 */
 void Customer::insert() {
-    cout << "Enter the Card Number: "<<'\n';
+    cout << "Enter the Card Number: " << '\n';
     cin >> cno;
     ano = getacc(cno);
-    if (ano == "None")       
+    if (ano == "None")
         cardint(cno);
     else if (ano == "Invalid")
         cout << "Invalid Pin";
     else
-        operations();  
+        operations();
 }
 
 /*
@@ -26,31 +26,31 @@ void Customer::operations() {
     int choice, money;
     cout << "1.Balance 2.Withdraw 3.Deposit 4.Transfer \n";
     cin >> choice;
-    switch(choice) {       
-        case 1:
-            cout<<"Account balance is : " << balance();
-            break;
-        case 2: {
-            cout << "Enter the amount to be withdrawn : ";
-            cin >> money;
-            withdraw(money);
-            break; }
-        case 3:            
-            cout<<"Enter the amount to be deposited : ";
-            cin>>money;
-            deposit(money);
-            break;
-        case 4: {     
-            string ano;
-            cout << "Enter the account number of recipient : ";
-            cin >> ano;
-            cout << "Enter the amount to be transferred : ";
-            cin >> money;
-            transfer(ano, money);
-            break; }
-        default:
-            cout<<"Invalid Operation\n";
-            break;
+    switch (choice) {
+    case 1:
+        cout << "Account balance is : " << balance();
+        break;
+    case 2: {
+        cout << "Enter the amount to be withdrawn : ";
+        cin >> money;
+        withdraw(money);
+        break; }
+    case 3:
+        cout << "Enter the amount to be deposited : ";
+        cin >> money;
+        deposit(money);
+        break;
+    case 4: {
+        string ano;
+        cout << "Enter the account number of recipient : ";
+        cin >> ano;
+        cout << "Enter the amount to be transferred : ";
+        cin >> money;
+        transfer(ano, money);
+        break; }
+    default:
+        cout << "Invalid Operation\n";
+        break;
     }
 }
 
@@ -60,12 +60,12 @@ void Customer::operations() {
 int Customer::balance() {
     int balance;
     vector<Record>& Data = contain();
-    for (Record rec : Data){
+    for (Record rec : Data) {
         if (this->ano == rec.ano) {
             balance = rec.balance;
             Data.clear();
             return balance;
-        }                      
+        }
     }
 }
 
@@ -74,7 +74,7 @@ int Customer::balance() {
 */
 void Customer::withdraw(int mon) {
     if (balance() > mon && mon % 10 == 0) {
-        balup(this-> ano, -mon);
+        balup(this->ano, -mon);
         cout << "Transaction Successful" << '\n';
     }
     else
@@ -90,14 +90,14 @@ void Customer::deposit(int mon) {
     else {
         balup(this->ano, mon);
         cout << "Transaction Successful" << '\n';
-    }    
+    }
 }
 
 /*
 * Transfers money from 1 account to another
 */
 void Customer::transfer(string ano, int mon) {
-    if(balance() > mon){
+    if (balance() > mon) {
         balup(this->ano, -mon);
         balup(ano, mon);
         cout << "Transaction Successful" << '\n';
@@ -111,7 +111,7 @@ void Customer::transfer(string ano, int mon) {
 */
 void File::cardint(string cno) {
     bool ans; int flag = 0;
-    string accno,npin,rpin;
+    string accno, npin, rpin;
     vector<Record>& Data = contain();
     cout << "Card not Found\n";
     cout << "Do you want to Initialize your card ? (0 : NO, 1 : YES) : ";
@@ -119,9 +119,9 @@ void File::cardint(string cno) {
     if (ans == 1)
     {
         cout << "Please Enter Your Account Number: ";
-        cin >>accno;
-        while (flag != 1) {           
-            if (flag == 2) 
+        cin >> accno;
+        while (flag != 1) {
+            if (flag == 2)
                 cout << "Both pins should be same.\n Try Again";
             cout << "Set a pin: ";
             cin >> npin;
@@ -132,19 +132,19 @@ void File::cardint(string cno) {
             else
                 flag = 2;
         }
-            
-        for (Record& rec : Data) {  
-            if(rec.ano == accno) {  
-                rec.cnos.push_back(cno);  
-                rec.pins.push_back(rpin);    
+
+        for (Record& rec : Data) {
+            if (rec.ano == accno) {
+                rec.cnos.push_back(cno);
+                rec.pins.push_back(rpin);
                 write(Data);
                 Data.clear();
                 break;
-            }   
+            }
         }
         Data.clear();
     }
-    else cout << "Thank you\n";       
+    else cout << "Thank you\n";
 }
 
 /*
@@ -152,21 +152,21 @@ void File::cardint(string cno) {
 */
 void File::balup(string ano, int mon) {
     vector<Record>& Data = contain();
-    for (Record& rec : Data) { 
+    for (Record& rec : Data) {
         if (rec.ano == ano) {
-            rec.balance += mon;        
+            rec.balance += mon;
             write(Data);
             Data.clear();
             break;
-        }           
-    }  
+        }
+    }
 }
 
 /*
-* Returns csv file Data in a Vector form where each vector element is a 
+* Returns csv file Data in a Vector form where each vector element is a
 * Record type with properties ano, cnos, pins, balance
 */
-vector<Record>& File::contain() 
+vector<Record>& File::contain()
 {
     static vector<Record> Data;
     ifstream fin;
@@ -223,8 +223,8 @@ void File::write(vector<Record> Data) {
         size = rec.cnos.size();
         for (i = 0; i < size; i++) {
             fout << rec.cnos[i];
-            if (i != size - 1) 
-                fout << ", ";        
+            if (i != size - 1)
+                fout << ", ";
         }
         fout << "\", \"";
 
@@ -249,7 +249,7 @@ void File::write(vector<Record> Data) {
 */
 string File::getacc(string cno) {
     string ano;
-    vector<Record>& Data = contain();   
+    vector<Record>& Data = contain();
     for (Record& rec : Data) {
         for (int i = 0; i < rec.cnos.size(); i++) {
             if (rec.cnos[i] == cno) {
@@ -260,7 +260,7 @@ string File::getacc(string cno) {
                     ano = rec.ano;
                     Data.clear();
                     return ano;
-                }                                                     
+                }
                 else
                     return "Invalid";
             }
