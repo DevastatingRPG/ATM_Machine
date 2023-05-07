@@ -1,6 +1,10 @@
 #include "bank.h"
 using namespace std;
 
+/*
+* Accepts Card Number from user and checks if it exists using getacc(). If it exists, asks for a pin and verifies it, then
+* calls operations() if verified.. If it doesn’t exist, asks user if they want to initialize the card to their account.
+*/
 void Customer::insert() {
     cout << "Enter the Card Number: "<<'\n';
     cin >> cno;
@@ -13,12 +17,14 @@ void Customer::insert() {
         operations();  
 }
 
+/*
+* Asks the user for their choice of operations and performs it by calling the respective functions.
+*/
 void Customer::operations() {
-    int choice;
+    int choice, money;
     cout << "1.Balance 2.Withdraw 3.Deposit 4.Transfer \n";
     cin >> choice;
-    switch(choice) {
-        int money;
+    switch(choice) {       
         case 1:
             cout<<"Account balance is : " << balance();
             break;
