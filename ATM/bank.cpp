@@ -5,18 +5,26 @@ using namespace std;
 
 /*
 * Accepts Card Number from user and checks if it exists using getacc(). If it exists, asks for a pin and verifies it, then
-* calls operations() if verified.. If it doesn’t exist, asks user if they want to initialize the card to their account.
+* calls operations() if verified.. If it doesnâ€™t exist, asks user if they want to initialize the card to their account.
 */
 void Customer::insert() {
     cout << "Enter the Card Number: " << '\n';
     cin >> cno;
     ano = getacc(cno);
-    if (ano == "None")
-        cardint(cno);
-    else if (ano == "Invalid")
-        cout << "Invalid Pin";
-    else
-        operations();
+    try
+    {
+        if (ano == "None")
+            cardint();
+        else if (ano == "Invalid")
+            throw "Invalid pin \nTransaction Unsuccesful";
+            
+        else
+            operations();
+    }
+    catch (const char* p) {
+        cout << p;
+    }
+   
 }
 
 /*
@@ -120,26 +128,28 @@ void File::cardint(string cno) {
     {
         cout << "Please Enter Your Account Number: ";
         cin >> accno;
-        while (flag != 1) {
-            if (flag == 2)
-                cout << "Both pins should be same.\n Try Again";
-            cout << "Set a pin: ";
-            cin >> npin;
-            cout << "Confirm your pin: ";
-            cin >> rpin;
-            if (npin == rpin)
-                flag = 1;
-            else
-                flag = 2;
-        }
+        if (acccheck()) {
+            while (flag != 1) {
+                if (flag == 2)
+                    cout << "Both pins should be same.\n Try Again";
+                cout << "Set a pin: ";
+                cin >> npin;
+                cout << "Confirm your pin: ";
+                cin >> rpin;
+                if (npin == rpin)
+                    flag = 1;
+                else
+                    flag = 2;
+            }
 
-        for (Record& rec : Data) {
-            if (rec.ano == accno) {
-                rec.cnos.push_back(cno);
-                rec.pins.push_back(rpin);
-                write(Data);
-                Data.clear();
-                break;
+            for (Record& rec : Data) {
+                if (rec.ano == accno) {
+                    rec.cnos.push_back(cno);
+                    rec.pins.push_back(rpin);
+                    write(Data);
+                    Data.clear();
+                    break;
+                }
             }
         }
         Data.clear();
@@ -242,6 +252,18 @@ void File::write(vector<Record> Data) {
 
     remove("bank.csv");
     rename("banknew.csv", "bank.csv");
+}
+
+//Check the existance of an account number
+
+bool File::acccheck(string acc) {
+    vector<Record>& Data = contain();
+    for (Record rec : Data) {
+        if (acc == rec.ano) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 /*
