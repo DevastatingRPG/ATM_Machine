@@ -72,7 +72,7 @@ int Customer::balance() {
 /*
 * Withdraws money from account
 */
-void Customer::withdraw(int mon) {
+void Customer::withdraw(long int mon) {
     if (balance() > mon && mon % 10 == 0) {
         balup(this->ano, -mon);
         cout << "Transaction Successful" << '\n';
@@ -84,7 +84,7 @@ void Customer::withdraw(int mon) {
 /*
 * Deposits money into account
 */
-void Customer::deposit(int mon) {
+void Customer::deposit(long int mon) {
     if (mon % 10 != 0)
         cout << "Invalid Denomination \n";
     else {
@@ -96,7 +96,7 @@ void Customer::deposit(int mon) {
 /*
 * Transfers money from 1 account to another
 */
-void Customer::transfer(string ano, int mon) {
+void Customer::transfer(string ano, long int mon) {
     if (balance() > mon) {
         balup(this->ano, -mon);
         balup(ano, mon);
@@ -150,7 +150,7 @@ void File::cardint(string cno) {
 /*
 * Updates Balance of entered Account number by entered amount
 */
-void File::balup(string ano, int mon) {
+void File::balup(string ano, long int mon) {
     vector<Record>& Data = contain();
     for (Record& rec : Data) {
         if (rec.ano == ano) {
