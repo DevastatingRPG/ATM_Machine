@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 #include <sstream>
 using namespace std;
 
@@ -21,6 +22,7 @@ public:
     void write(vector<Record> Data);
     string getacc(string cno);
     void cardint(string cno);
+    bool acccheck(string ano);
 };
 
 class Customer : public File{
