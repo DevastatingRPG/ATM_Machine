@@ -14,7 +14,7 @@ void Customer::insert() {
     try
     {
         if (ano == "None")
-            cardint();
+            cardint(cno);
         else if (ano == "Invalid")
             throw "Invalid pin \nTransaction Unsuccesful";
             
