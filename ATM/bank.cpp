@@ -17,14 +17,14 @@ void Customer::insert() {
             cardint(cno);
         else if (ano == "Invalid")
             throw "Invalid pin \nTransaction Unsuccesful";
-            
+
         else
             operations();
     }
     catch (const char* p) {
         cout << p;
     }
-   
+
 }
 
 /*
@@ -120,7 +120,7 @@ void Customer::transfer(string ano, long int mon) {
 void File::cardint(string cno) {
     bool ans; int flag = 0;
     string accno, npin, rpin;
-    
+    vector<Record>& Data = contain();
     cout << "Card not Found\n";
     cout << "Do you want to Initialize your card ? (0 : NO, 1 : YES) : ";
     cin >> ans;
@@ -141,7 +141,7 @@ void File::cardint(string cno) {
                 else
                     flag = 2;
             }
-            vector<Record>& Data = contain();
+
             for (Record& rec : Data) {
                 if (rec.ano == accno) {
                     rec.cnos.push_back(cno);
@@ -152,6 +152,8 @@ void File::cardint(string cno) {
                 }
             }
         }
+        else cout << "Value not found \n\nThank You\n";
+        Data.clear();
     }
     else cout << "Thank you\n";
 }
@@ -255,16 +257,14 @@ void File::write(vector<Record> Data) {
 
 //Check the existance of an account number
 
-bool File::acccheck(string ano) {
+bool File::acccheck(string acc) {
     vector<Record>& Data = contain();
     for (Record rec : Data) {
-        if (ano == rec.ano) {
+        if (acc == rec.ano) {
             Data.clear();
             return 1;
         }
-            
     }
-    Data.clear();
     return 0;
 }
 
