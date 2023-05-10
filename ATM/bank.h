@@ -21,6 +21,7 @@ public:
     void write(vector<Record> Data);
     string getacc(string cno);
     void cardint(string cno);
+    bool acccheck(string ano);
 };
 
 class Customer : public File{

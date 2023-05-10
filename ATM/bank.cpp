@@ -120,7 +120,7 @@ void Customer::transfer(string ano, long int mon) {
 void File::cardint(string cno) {
     bool ans; int flag = 0;
     string accno, npin, rpin;
-    vector<Record>& Data = contain();
+    
     cout << "Card not Found\n";
     cout << "Do you want to Initialize your card ? (0 : NO, 1 : YES) : ";
     cin >> ans;
@@ -128,7 +128,7 @@ void File::cardint(string cno) {
     {
         cout << "Please Enter Your Account Number: ";
         cin >> accno;
-        if (acccheck()) {
+        if (acccheck(accno)) {
             while (flag != 1) {
                 if (flag == 2)
                     cout << "Both pins should be same.\n Try Again";
@@ -141,7 +141,7 @@ void File::cardint(string cno) {
                 else
                     flag = 2;
             }
-
+            vector<Record>& Data = contain();
             for (Record& rec : Data) {
                 if (rec.ano == accno) {
                     rec.cnos.push_back(cno);
@@ -152,7 +152,6 @@ void File::cardint(string cno) {
                 }
             }
         }
-        Data.clear();
     }
     else cout << "Thank you\n";
 }
@@ -256,13 +255,16 @@ void File::write(vector<Record> Data) {
 
 //Check the existance of an account number
 
-bool File::acccheck(string acc) {
+bool File::acccheck(string ano) {
     vector<Record>& Data = contain();
     for (Record rec : Data) {
-        if (acc == rec.ano) {
+        if (ano == rec.ano) {
+            Data.clear();
             return 1;
         }
+            
     }
+    Data.clear();
     return 0;
 }
 
